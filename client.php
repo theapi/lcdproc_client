@@ -4,7 +4,7 @@ namespace Theapi\Lcdproc;
 class Client
 {
 
-    protected $debug = 2;
+    protected $debug = 1;
     protected $server;
     protected $port;
 
@@ -12,7 +12,7 @@ class Client
 
     public function start($server, $port = 13666)
     {
-        $this->clientName = $clientName;
+
         $this->connect($server, $port);
         $this->write('hello');
         $line = $this->read();
@@ -44,14 +44,7 @@ class Client
     			if ($this->debug > 0) echo ">< Display height set to 2 (default)\n";
     		}
 
-/*
-        $this->write('client_set name "'. $clientName .'"');
-        $this->read();
-        $this->write('screen_add '.$clientName.'_screen');
-        $this->read();
-*/
         return $this->fp;
-
     }
 
     public function connect($server, $port = 13666)
@@ -81,7 +74,6 @@ class Client
         }
 
         $line = fgets($this->fp);
-        $line = trim($line);
 
         if ($this->debug > 2) {
             $info = stream_get_meta_data($link);
@@ -99,8 +91,6 @@ class Client
         if (!$this->fp) {
             throw new \Exception('No connection to ' . $this->server . ':' . $this->port);
         }
-
-        $buf = trim($buf);
 
         if ($this->debug > 1) {
             foreach(explode("\n", $buf) as $line) echo " > $line\n";
